@@ -1,0 +1,17 @@
+name: signal_wave
+
+environment:
+  sdk: '>2.2.2'
+
+dependencies:
+  dartz:  #'^0.8.3'
+    git:
+      url: https://github.com/modulovalue/dartz
+      ref: d9a94b730b838827679cf497ac6e5a4752251e09
+  decimal: "0.3.4" # https://pub.dev/packages/decimal#-installing-tab-
+  dart_filter: ^1.0.0
+  functional_data: ^0.2.2
+  single_base: any
+dev_dependencies:
+  test: any
+  extra_pedantic: ^1.0.0
