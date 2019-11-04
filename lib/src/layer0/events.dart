@@ -1,77 +1,74 @@
 abstract class Event<T> {
+  const Event._();
 
-    const Event();
-
-    void visit(void Function(T) onValue, void Function() onCompleted) {
-        final self = this;
-        if (self is NextEvent<T>)
-            onValue(self.value);
-        if (self is CloseEvent)
-            onCompleted();
-    }
+  void visit(void Function(T) onValue, void Function() onCompleted);
 }
 
 class NextEvent<T> extends Event<T> {
+  final T value;
 
-    final T value;
+  const NextEvent(this.value) : super._();
 
-    const NextEvent(this.value);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NextEvent &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
-    @override
-    bool operator ==(Object other) =>
-        identical(this, other) ||
-            other is NextEvent &&
-                runtimeType == other.runtimeType &&
-                value == other.value;
+  @override
+  void visit(void Function(T) onValue, void Function() onCompleted) =>
+      onValue(value);
 
-    @override
-    int get hashCode => value.hashCode;
+  @override
+  int get hashCode => value.hashCode;
 
-    @override
-    String toString() => 'NextEvent{value: $value}';
+  @override
+  String toString() => '$runtimeType{value: $value}';
 }
 
 class CloseEvent<T> extends Event<T> {
+  const CloseEvent() : super._();
 
-    const CloseEvent();
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CloseEvent && runtimeType == other.runtimeType;
 
-    @override
-    bool operator ==(Object other) =>
-        identical(this, other) ||
-            other is CloseEvent && runtimeType == other.runtimeType;
+  @override
+  void visit(void Function(T) onValue, void Function() onCompleted) =>
+      onCompleted();
 
-    @override
-    int get hashCode => 0;
+  @override
+  int get hashCode => 0;
 
-    @override
-    String toString() => 'CompletedEvent{}';
+  @override
+  String toString() => '$runtimeType{}';
 }
 
 /// Decorates an event with a key so it can be associated with a specific wave.
 class KeyedEvent<T> extends Event<T> {
+  final Event<T> event;
 
-    final Event<T> event;
+  final Object key;
 
-    final Object key;
+  const KeyedEvent(this.key, this.event) : super._();
 
-    const KeyedEvent(this.key, this.event);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KeyedEvent &&
+          runtimeType == other.runtimeType &&
+          event == other.event &&
+          key == other.key;
 
-    @override
-    bool operator ==(Object other) =>
-        identical(this, other) ||
-            other is KeyedEvent &&
-                runtimeType == other.runtimeType &&
-                event == other.event &&
-                key == other.key;
+  @override
+  void visit(void Function(T) onValue, void Function() onCompleted) =>
+      event.visit(onValue, onCompleted);
 
-    @override
-    void visit(void Function(T) onValue, void Function() onCompleted) {
-        event.visit(onValue, onCompleted);
-    }
+  @override
+  int get hashCode => event.hashCode ^ key.hashCode;
 
-    @override
-    int get hashCode => event.hashCode ^ key.hashCode;
-
-    @override
-    String toString() => '$runtimeType{event: $event, key: $key}';
+  @override
+  String toString() => '$runtimeType{event: $event, key: $key}';
 }
