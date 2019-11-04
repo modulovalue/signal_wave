@@ -1,6 +1,6 @@
 name: signal_wave
 description: A Functional Reactive Programming (FRP) approach to Streams in Dart.
-version: 0.1.0
+version: 0.0.1
 homepage: https://www.github.com/modulovalue/signal_wave
 author: Modestas Valauskas <valauskasmodestas+dartpub@gmail.com>
 issue_tracker: https://github.com/modulovalue/signal_wave/issues
@@ -8,12 +8,8 @@ issue_tracker: https://github.com/modulovalue/signal_wave/issues
 environment:
   sdk: '>2.2.2 <3.0.0'
 
-dependencies:
-  single_base: any
-
 dev_dependencies:
   test: ^1.5.0
-  mockito: ^4.0.0
   test_coverage: ^0.2.0
   extra_pedantic: ^1.1.1+3
   dartz: ^0.8.7
